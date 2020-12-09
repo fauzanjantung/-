@@ -59,23 +59,25 @@ class Home extends Component {
         this.fetchItems(endpoint)
     }
 
-    fetchItems = (endpoint) => {
-        fetch(endpoint)
-            .then(result => result.json())
-            .then(result => {
-                this.setState({
-                    movies: [...this.state.movies, ...result.results],
-                    heroImage: this.state.heroImage || result.results[0],
-                    loading: false,
-                    currentPage: result.page,
-                    totalPages: result.total_pages
-                }, () => {
-                        if (this.state.searchTerm === "") {
-                            localStorage.setItem('HomeState', JSON.stringify(this.state))
-                        }
-                })
+    
+    fetchItems = async endpoint => {
+        const result = await (await (await fetch(endpoint)).json())
+        try {
+            this.setState({
+                movies: [...this.state.movies, ...result.results],
+                heroImage: this.state.heroImage || result.results[0],
+                loading: false,
+                currentPage: result.page,
+                totalPages: result.total_pages
+            }, () => {
+                if (this.state.searchTerm === "") {
+                    localStorage.setItem('HomeState', JSON.stringify(this.state))
+                }
             })
-        .catch(error => console.log('Error', error))
+        }
+        catch (e) {
+            console.log("Err", e)
+        }
     }
 
     render() {

@@ -19,7 +19,7 @@ class Movie extends Component {
     componentDidMount() {
         if (localStorage.getItem(`${this.props.match.params.movieId}`)) {
             const state = JSON.parse(localStorage.getItem(`${this.props.match.params.movieId}`))
-            this.state({...state})
+            this.setState({...state})
         } else {
             this.setState({ loading: true })
             //First fetch the movie
